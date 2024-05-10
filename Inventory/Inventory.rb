@@ -22,6 +22,7 @@ class Inventory
   end
 
   def load_books
+    @books = []
     books_table = CSV.parse(File.read("books.csv"), headers: true)
     books_table.each do |row|
       @books << Book.new(row['title'], row['author'], row['isbn']) 
@@ -29,7 +30,6 @@ class Inventory
   end
 
   def list_books()
-    @books = []
     load_books() 
     @books.each do |book|
       puts "ISBN: #{book.isbn}, title: #{book.title}, Author: #{book.author}" 
