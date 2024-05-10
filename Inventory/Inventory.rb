@@ -16,43 +16,55 @@ end
 
 class Inventory
 
-  @@books = []
+  def initialize(file_name = "books.csv")
+    @file_name = file_name
+    @books = []
+  end
 
-  def initialize
+  def load_books
     books_table = CSV.parse(File.read("books.csv"), headers: true)
-    books_table.each do |book|
-      @@books << Book.new(book['title'],  book['author'],  book['isbn'])
+    books_table.each do |row|
+      @books << Book.new(row['title'], row['author'], row['isbn']) 
     end
   end
 
   def list_books()
-    @@books.each do |book|
-      puts "ISBN: #{book.isbn}, title: #{book.title}, Author: #{book.author}"
+    @books = []
+    load_books() 
+    @books.each do |book|
+      puts "ISBN: #{book.isbn}, title: #{book.title}, Author: #{book.author}" 
+    end
+  end
+
+  def save_to_csv
+    CSV.open(@file_name, "w", quote_char: "") do |csv|
+      csv << ['title', 'author', 'isbn']
+      @books.each do |book|
+        isbn = book.isbn.gsub("\n", "")
+        title = book.title.gsub("\n", "")
+        author = book.author.gsub("\n", "")
+        csv << [title, author, isbn]
+      end
     end
   end
 
   def add_book(book)
-    books = []
-    CSV.foreach("books.csv") do |row|
-      books << row
-      puts row
-    end
-    @@books << book
+    @books << book 
+    save_to_csv
   end
 
   def remove_book_by_isbn(isbn)
-    @@books.each_with_index do |book, index|
-      if book.isbn == isbn
-        @@books.delete_at(index)
-      end
-    end
-  end
+    load_books() 
+    # p @books
+    book_index = @books.find_index { |b| b.isbn.to_i == isbn.to_i }
 
-  def search_book(val, choice)
-    @@books.each_with_index do |book, index|
-      if book.isbn == val
-        return book
-      end
+    if book_index
+      @books.delete_at(book_index)
+      save_to_csv
+      puts "Book with ISBN #{isbn} deleted."
+      load_books() 
+    else
+      puts "Book with ISBN #{isbn} not found."
     end
   end
 end
