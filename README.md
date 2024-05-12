@@ -28,7 +28,8 @@ The program simulates a basic banking system where transactions are processed fo
 ## Example Output
 
 - **Terminal Output:**
+  ![Screenshot 2024-05-12 211010](https://github.com/marwan-mohamed12/ITI_ruby_course/assets/40841193/36e66776-342a-4ff4-b631-4a68d4263df8)
 
 - **file.log:**
-    
+  ![Screenshot 2024-05-12 211319](https://github.com/marwan-mohamed12/ITI_ruby_course/assets/40841193/f1489ef6-7b22-4671-bfd3-235fd9dcd01e)
 
