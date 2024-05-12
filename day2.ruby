@@ -1,6 +1,5 @@
 require 'time'
 
-# Logger Module
 module Logger
   def log_info(message)
     log_to_file("info", message)
@@ -23,7 +22,6 @@ module Logger
   end
 end
 
-# User Class
 class User
   attr_reader :name, :balance 
 
@@ -44,7 +42,6 @@ class User
   end
 end
 
-# Transaction Class
 class Transaction
   attr_reader :user, :value
 
@@ -54,14 +51,12 @@ class Transaction
   end
 end
 
-# Abstract Bank Class
 class Bank
   def process_transactions(transactions, &callback)
     raise NotImplementedError, "This method must be implemented by subclasses" 
   end
 end
 
-# CBABank Class
 class CBABank < Bank
   include Logger
 
@@ -89,9 +84,6 @@ class CBABank < Bank
   end
 end
 
-# Example Usage (Main)
-
-# Create users
 users = [
   User.new("Ali", 200),
   User.new("Peter", 500),
@@ -102,7 +94,6 @@ out_side_bank_users = [
   User.new("Menna", 400),
 ]
 
-# Create transactions
 transactions = [
   Transaction.new(users[0], -20),
   Transaction.new(users[0], -30),
@@ -112,10 +103,8 @@ transactions = [
   Transaction.new(out_side_bank_users[0], -100)
 ]
 
-# Create CBABank
 cba_bank = CBABank.new(users)
 
-# Process transactions and call the callback for each
 cba_bank.process_transactions(transactions) do |status, transaction, reason=nil|
   if status == "success"
     puts "Call endpoint for success of User #{transaction.user.name} transaction with value #{transaction.value}"
